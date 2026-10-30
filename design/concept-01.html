@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Odonto — concepto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#F6F0E7;
+    --ivory-2:#EFE6D9;
+    --ink:#1B1613;
+    --ink-soft:#4A403A;
+    --muted:#8C7F73;
+    --line:rgba(27,22,19,.10);
+    --line-2:rgba(27,22,19,.16);
+    --coral:#C25C3B;
+    --coral-soft:#F3DFD5;
+    --sage:#6F8570;
+    --card:rgba(255,252,247,.72);
+    --serif:"Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+    --sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:transparent}
+  body{font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+  .wrap{padding:10px}
+  .screen{
+    position:relative;border-radius:20px;overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 50% 8%, #FFFBF4 0%, rgba(255,251,244,0) 55%),
+      radial-gradient(90% 80% at 78% 88%, #F0E3D2 0%, rgba(240,227,210,0) 60%),
+      var(--ivory);
+    border:1px solid var(--line);
+    box-shadow:0 30px 60px -40px rgba(60,40,25,.45), 0 2px 0 rgba(255,255,255,.7) inset;
+    height:720px;
+  }
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.055'/></svg>");}
+
+  /* ---------- header ---------- */
+  header{position:relative;z-index:5;display:flex;align-items:center;gap:24px;height:66px;padding:0 26px}
+  .mark{font-family:var(--serif);font-size:23px;letter-spacing:-.02em;font-weight:500}
+  .mark i{font-style:italic;color:var(--coral)}
+  nav{display:flex;gap:4px;margin-left:12px}
+  nav button{
+    font:500 13px/1 var(--sans);color:var(--muted);background:none;border:0;padding:9px 14px;border-radius:999px;cursor:pointer;
+    transition:color .25s, background .25s;
+  }
+  nav button:hover{color:var(--ink-soft);background:rgba(27,22,19,.04)}
+  nav button[aria-current]{color:var(--ink);background:rgba(255,255,255,.7);box-shadow:0 1px 2px rgba(60,40,25,.06),0 0 0 1px var(--line)}
+  .right{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .streak{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;color:var(--ink-soft);
+    background:rgba(255,255,255,.6);border:1px solid var(--line);padding:7px 12px;border-radius:999px}
+  .streak b{font-variant-numeric:tabular-nums;font-weight:600}
+  .flame{width:11px;height:14px;border-radius:6px 6px 4px 4px;background:linear-gradient(180deg,#E5865B,#C25C3B);box-shadow:0 0 10px #E5865B66}
+  .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(160deg,#E7D3BE,#C9A98D);border:1px solid rgba(255,255,255,.8);box-shadow:0 1px 3px rgba(60,40,25,.15)}
+
+  /* ---------- body ---------- */
+  .body{position:relative;z-index:2;display:grid;grid-template-columns:1fr 344px;gap:0;height:654px;padding:0 18px 18px 18px}
+
+  .stage{position:relative;overflow:hidden;border-radius:16px}
+  .layer{position:absolute;inset:0;display:grid;place-items:center;transition:opacity .55s ease, transform .7s cubic-bezier(.2,.8,.2,1)}
+  .layer.hidden{opacity:0;transform:scale(.94);pointer-events:none}
+
+  .halo{position:absolute;left:50%;top:52%;width:min(560px,86%);aspect-ratio:1;transform:translate(-50%,-50%);
+    background:radial-gradient(circle, rgba(255,250,240,.95) 0%, rgba(255,246,232,.55) 42%, rgba(255,246,232,0) 70%);filter:blur(6px)}
+
+  /* tooth */
+  .toothWrap{position:relative;filter:drop-shadow(0 34px 26px rgba(96,62,38,.20))}
+  #tooth{display:block;height:560px;width:auto;animation:float 8s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  #tooth .sec{transition:opacity .45s ease}
+  #tooth.mode-solid .sec{opacity:0}
+  #tooth.mode-section .solidView{opacity:0}
+  #tooth .lg{transition:opacity .35s ease}
+  .off{opacity:0!important}
+
+  /* arch */
+  #arch{display:block;width:min(660px,96%);height:auto;animation:float 9s ease-in-out infinite}
+  #arch .t{cursor:pointer;transition:transform .25s cubic-bezier(.2,.8,.2,1), filter .25s;transform-box:fill-box;transform-origin:center}
+  #arch .t:hover{transform:scale(1.22);filter:drop-shadow(0 6px 8px rgba(96,62,38,.25))}
+  #arch .t:hover rect{fill:#fff}
+  #arch .num{font:600 9.5px var(--sans);fill:var(--muted);pointer-events:none}
+  #arch .hintHalo{animation:pulse 2.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:0}50%{opacity:.85}}
+
+  /* rail */
+  .rail{position:absolute;left:14px;top:50%;transform:translateY(-50%);z-index:4;display:flex;flex-direction:column;gap:6px;
+    padding:10px;border-radius:18px;background:var(--card);backdrop-filter:blur(14px);border:1px solid var(--line);
+    box-shadow:0 18px 30px -24px rgba(60,40,25,.5);transition:opacity .4s, transform .5s}
+  .rail.hidden{opacity:0;transform:translate(-10px,-50%);pointer-events:none}
+  .chip{display:flex;align-items:center;gap:9px;padding:8px 11px 8px 9px;border-radius:12px;border:1px solid transparent;
+    background:none;cursor:pointer;font:500 12.5px var(--sans);color:var(--ink-soft);white-space:nowrap;transition:background .2s,border-color .2s,color .2s}
+  .chip:hover{background:rgba(255,255,255,.75);border-color:var(--line)}
+  .chip[aria-pressed="false"]{color:#B5A79A}
+  .dot{width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 3px rgba(255,255,255,.6)}
+  .chip[aria-pressed="false"] .dot{opacity:.25}
+  .railSep{height:1px;background:var(--line);margin:4px 2px}
+
+  /* mode toggle */
+  .modes{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:4;display:flex;gap:3px;padding:4px;
+    border-radius:999px;background:var(--card);backdrop-filter:blur(14px);border:1px solid var(--line);
+    box-shadow:0 14px 26px -20px rgba(60,40,25,.55);transition:opacity .4s, transform .5s}
+  .modes.hidden{opacity:0;transform:translate(-50%,10px);pointer-events:none}
+  .modes button{font:500 12.5px var(--sans);color:var(--muted);background:none;border:0;padding:8px 16px;border-radius:999px;cursor:pointer;transition:background .25s,color .25s}
+  .modes button[aria-pressed="true"]{background:var(--ink);color:#FFF9F1}
+
+  /* aside */
+  aside{position:relative;z-index:4;display:flex;flex-direction:column;gap:12px;padding:6px 0 0 16px}
+  .panel{border-radius:18px;border:1px solid var(--line);background:var(--card);backdrop-filter:blur(16px);
+    box-shadow:0 22px 40px -30px rgba(60,40,25,.45);padding:20px}
+  .eyebrow{font:600 10.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  h1{font-family:var(--serif);font-weight:400;font-size:31px;line-height:1.08;letter-spacing:-.025em;margin:8px 0 2px}
+  h1 em{font-style:italic;color:var(--coral)}
+  .sub{font-size:13px;color:var(--muted);margin:0}
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:16px 0 0;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .fact{background:rgba(255,252,247,.9);padding:10px 12px}
+  .fact b{display:block;font:600 15px var(--sans);font-variant-numeric:tabular-nums}
+  .fact span{font-size:10.5px;color:var(--muted);letter-spacing:.02em}
+
+  .quiz{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line-2)}
+  .qtext{font-size:13.5px;font-weight:500;margin:0 0 10px;line-height:1.35}
+  .opts{display:flex;gap:6px;flex-wrap:wrap}
+  .opt{font:500 12.5px var(--sans);padding:8px 14px;border-radius:10px;border:1px solid var(--line-2);background:rgba(255,255,255,.6);cursor:pointer;transition:all .2s}
+  .opt:hover{border-color:var(--ink);transform:translateY(-1px)}
+  .opt.ok{background:#DCE7DC;border-color:#8FA98E;color:#33512F}
+  .opt.bad{background:#F6DED6;border-color:#D69A85;color:#7E2F1C}
+  .fb{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.45;opacity:0;transition:opacity .3s}
+  .fb.show{opacity:1}
+
+  /* today card */
+  .ring{display:flex;align-items:center;gap:16px}
+  .ring svg{flex:none}
+  .ringTxt b{display:block;font-family:var(--serif);font-size:26px;font-weight:400;letter-spacing:-.02em;line-height:1}
+  .ringTxt span{font-size:12px;color:var(--muted)}
+  .btn{margin-top:16px;width:100%;padding:13px;border-radius:12px;border:0;background:var(--ink);color:#FFF9F1;
+    font:600 13.5px var(--sans);cursor:pointer;transition:transform .2s, box-shadow .25s;box-shadow:0 10px 20px -14px rgba(27,22,19,.9)}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 14px 24px -14px rgba(27,22,19,.9)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2);box-shadow:none;margin-top:8px}
+  .mini{display:flex;gap:18px;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line-2)}
+  .mini div b{display:block;font:600 16px var(--sans);font-variant-numeric:tabular-nums}
+  .mini div span{font-size:10.5px;color:var(--muted)}
+
+  .back{display:inline-flex;align-items:center;gap:6px;font:500 12px var(--sans);color:var(--muted);background:none;border:0;cursor:pointer;padding:0;margin-bottom:10px}
+  .back:hover{color:var(--ink)}
+  .back svg{width:12px;height:12px}
+
+  .badge{display:inline-flex;align-items:center;gap:6px;font:500 11px var(--sans);color:var(--sage);
+    background:rgba(111,133,112,.10);padding:5px 10px;border-radius:999px;margin-top:12px}
+
+  .toast{position:absolute;left:50%;bottom:76px;transform:translate(-50%,10px);z-index:9;background:var(--ink);color:#FFF9F1;
+    font:500 12px var(--sans);padding:9px 14px;border-radius:999px;opacity:0;transition:all .35s;pointer-events:none}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  .hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font:500 12px var(--sans);color:var(--muted);
+    display:flex;align-items:center;gap:8px;transition:opacity .3s}
+  .hint.hidden{opacity:0}
+  .hint kbd{font:500 10.5px var(--sans);border:1px solid var(--line-2);border-bottom-width:2px;border-radius:5px;padding:2px 6px;color:var(--ink-soft);background:rgba(255,255,255,.6)}
+
+  @media (max-width:900px){
+    .screen{height:auto}
+    .body{grid-template-columns:1fr;height:auto;gap:12px}
+    .stage{height:460px}
+    #tooth{height:430px}
+    aside{padding:0}
+    .rail{top:auto;bottom:58px;left:50%;transform:translateX(-50%);flex-direction:row;flex-wrap:wrap;justify-content:center;max-width:100%}
+    .rail.hidden{transform:translate(-50%,10px)}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="screen">
+  <div class="grain"></div>
+
+  <header>
+    <div class="mark">odonto<i>.</i></div>
+    <nav>
+      <button aria-current="page">Explorar</button>
+      <button>Repasar</button>
+      <button>Progreso</button>
+    </nav>
+    <div class="right">
+      <div class="streak"><span class="flame"></span><b>12</b> días</div>
+      <div class="avatar"></div>
+    </div>
+  </header>
+
+  <div class="body">
+    <div class="stage" id="stage">
+      <div class="halo"></div>
+
+      <!-- ================= ARCH ================= -->
+      <div class="layer" id="view-arch">
+        <svg id="arch" viewBox="0 0 680 700" aria-label="Arcada completa"></svg>
+        <div class="hint" id="hint">Toca un diente <kbd>↗</kbd></div>
+      </div>
+
+      <!-- ================= TOOTH ================= -->
+      <div class="layer hidden" id="view-tooth">
+        <div class="toothWrap">
+          <svg id="tooth" class="mode-solid" viewBox="70 80 280 450" aria-label="Primer molar superior derecho">
+            <defs>
+              <linearGradient id="enamel" gradientUnits="userSpaceOnUse" x1="140" y1="100" x2="288" y2="500">
+                <stop offset="0" stop-color="#FFFCF2"/>
+                <stop offset=".3" stop-color="#F7E6CB"/>
+                <stop offset=".66" stop-color="#E6CBA4"/>
+                <stop offset="1" stop-color="#C8A273"/>
+              </linearGradient>
+              <linearGradient id="dentin" gradientUnits="userSpaceOnUse" x1="140" y1="100" x2="288" y2="500">
+                <stop offset="0" stop-color="#EED7B2"/>
+                <stop offset=".5" stop-color="#D8B684"/>
+                <stop offset="1" stop-color="#B98C5E"/>
+              </linearGradient>
+              <linearGradient id="shade" x1="0" y1="0" x2="1" y2="1">
+                <stop offset=".35" stop-color="#8A5F35" stop-opacity="0"/>
+                <stop offset="1" stop-color="#7A5330" stop-opacity=".55"/>
+              </linearGradient>
+              <linearGradient id="pulp" gradientUnits="userSpaceOnUse" x1="180" y1="150" x2="250" y2="480">
+                <stop offset="0" stop-color="#DA7C56"/>
+                <stop offset="1" stop-color="#96381F"/>
+              </linearGradient>
+              <radialGradient id="spec" cx=".42" cy=".18" r=".55">
+                <stop offset="0" stop-color="#fff" stop-opacity=".8"/>
+                <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+              </radialGradient>
+              <clipPath id="crownClip"><path d="M150,276 C142,250 137,214 139,186 C141,158 148,132 163,118 C171,110 181,110 188,118 C194,119 200,125 207,127 C214,129 221,123 228,116 C237,110 250,106 261,112 C274,119 282,142 283,168 C285,204 280,248 272,276 C262,285 242,288 227,288 L197,288 C182,288 161,285 150,276 Z"/></clipPath>
+              <clipPath id="toothClip"><path d="M150,276 C142,250 137,214 139,186 C141,158 148,132 163,118 C171,110 181,110 188,118 C194,119 200,125 207,127 C214,129 221,123 228,116 C237,110 250,106 261,112 C274,119 282,142 283,168 C285,204 280,248 272,276 C262,285 242,288 227,288 L197,288 C182,288 161,285 150,276 Z"/><path d="M161,272 C156,316 154,376 158,422 C161,450 167,468 176,470 C185,472 190,453 191,430 C193,386 195,328 198,278 Z"/><path d="M205,278 C208,330 212,390 216,428 C219,452 226,468 235,466 C244,464 248,443 248,414 C249,362 246,316 242,272 Z"/></clipPath>
+              <clipPath id="cervicalClip">
+                <path d="M120,236 C150,268 190,280 216,278 C242,276 272,262 292,236 L292,50 L120,50 Z"/>
+              </clipPath>
+            </defs>
+
+            <!-- SOLID -->
+            <g class="solidView">
+              <path d="M161,272 C156,316 154,376 158,422 C161,450 167,468 176,470 C185,472 190,453 191,430 C193,386 195,328 198,278 Z" fill="url(#enamel)"/>
+              <path d="M205,278 C208,330 212,390 216,428 C219,452 226,468 235,466 C244,464 248,443 248,414 C249,362 246,316 242,272 Z" fill="url(#enamel)"/>
+              <path d="M150,276 C142,250 137,214 139,186 C141,158 148,132 163,118 C171,110 181,110 188,118 C194,119 200,125 207,127 C214,129 221,123 228,116 C237,110 250,106 261,112 C274,119 282,142 283,168 C285,204 280,248 272,276 C262,285 242,288 227,288 L197,288 C182,288 161,285 150,276 Z" fill="url(#enamel)"/>
+              <g clip-path="url(#toothClip)">
+                <rect x="70" y="80" width="280" height="450" fill="url(#shade)" opacity=".55"/>
+                <ellipse cx="188" cy="146" rx="40" ry="30" fill="url(#spec)" opacity=".45"/>
+              </g>
+              <path d="M178,428 C182,450 186,464 190,468" fill="none" stroke="#B99261" stroke-width="2" opacity=".3" stroke-linecap="round"/>
+              <path d="M226,428 C230,450 233,462 237,464" fill="none" stroke="#B99261" stroke-width="2" opacity=".3" stroke-linecap="round"/>
+            </g>
+
+            <!-- SECTION -->
+            <g class="sec">
+              <g class="lg" data-layer="pdl" stroke="#8FA790" fill="none" stroke-width="12" opacity=".5" stroke-linejoin="round">
+                <path d="M161,272 C156,316 154,376 158,422 C161,450 167,468 176,470 C185,472 190,453 191,430 C193,386 195,328 198,278 Z"/><path d="M205,278 C208,330 212,390 216,428 C219,452 226,468 235,466 C244,464 248,443 248,414 C249,362 246,316 242,272 Z"/>
+              </g>
+              <g class="lg" data-layer="cement" stroke="#C9AE88" fill="none" stroke-width="6" stroke-linejoin="round">
+                <path d="M161,272 C156,316 154,376 158,422 C161,450 167,468 176,470 C185,472 190,453 191,430 C193,386 195,328 198,278 Z"/><path d="M205,278 C208,330 212,390 216,428 C219,452 226,468 235,466 C244,464 248,443 248,414 C249,362 246,316 242,272 Z"/><path d="M187,270 C185,324 184,390 186,444 C187,476 193,501 201,503 C210,505 215,484 216,456 C218,400 220,326 222,274 Z"/>
+              </g>
+              <g class="lg" data-layer="dentin">
+                <path d="M187,270 C185,324 184,390 186,444 C187,476 193,501 201,503 C210,505 215,484 216,456 C218,400 220,326 222,274 Z" fill="url(#dentin)"/>
+                <path d="M161,272 C156,316 154,376 158,422 C161,450 167,468 176,470 C185,472 190,453 191,430 C193,386 195,328 198,278 Z" fill="url(#dentin)"/>
+                <path d="M205,278 C208,330 212,390 216,428 C219,452 226,468 235,466 C244,464 248,443 248,414 C249,362 246,316 242,272 Z" fill="url(#dentin)"/>
+                <path d="M150,276 C142,250 137,214 139,186 C141,158 148,132 163,118 C171,110 181,110 188,118 C194,119 200,125 207,127 C214,129 221,123 228,116 C237,110 250,106 261,112 C274,119 282,142 283,168 C285,204 280,248 272,276 C262,285 242,288 227,288 L197,288 C182,288 161,285 150,276 Z" fill="url(#dentin)"/>
+              </g>
+              <g class="lg" data-layer="enamel" clip-path="url(#crownClip)">
+                <path class="enamel" clip-path="url(#cervicalClip)" d="M150,276 C142,250 137,214 139,186 C141,158 148,132 163,118 C171,110 181,110 188,118 C194,119 200,125 207,127 C214,129 221,123 228,116 C237,110 250,106 261,112 C274,119 282,142 283,168 C285,204 280,248 272,276 C262,285 242,288 227,288 L197,288 C182,288 161,285 150,276 Z" fill="none" stroke="#FCF2DF" stroke-width="17"/>
+              </g>
+              <g class="lg" data-layer="pulp">
+                <path d="M182,190 C184,174 192,160 201,158 C207,157 210,163 213,163 C217,163 221,157 228,159 C238,162 244,176 244,192 C244,208 238,222 231,232 L229,250 L213,250 L211,232 C201,228 191,218 186,208 C183,202 181,196 182,190 Z" fill="url(#pulp)"/>
+                <path d="M195,238 C191,300 186,362 183,418 L189,424 C193,362 198,300 202,244 Z" fill="url(#pulp)"/>
+                <path d="M233,240 C236,300 240,358 241,408 L246,412 C246,354 243,300 239,246 Z" fill="url(#pulp)"/>
+                <path d="M212,244 C210,320 209,400 209,468 L214,470 C216,396 217,320 218,246 Z" fill="url(#pulp)" opacity=".85"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- rail -->
+      <div class="rail hidden" id="rail">
+        <button class="chip" data-layer="enamel" aria-pressed="true"><span class="dot" style="background:#EBDCC2"></span>Esmalte</button>
+        <button class="chip" data-layer="dentin" aria-pressed="true"><span class="dot" style="background:#DCB889"></span>Dentina</button>
+        <button class="chip" data-layer="pulp" aria-pressed="true"><span class="dot" style="background:#C25C3B"></span>Pulpa</button>
+        <button class="chip" data-layer="cement" aria-pressed="true"><span class="dot" style="background:#CBB08A"></span>Cemento</button>
+        <button class="chip" data-layer="pdl" aria-pressed="true"><span class="dot" style="background:#8FA790"></span>Ligamento</button>
+        <div class="railSep"></div>
+        <button class="chip" id="resetLayers" aria-pressed="true"><span class="dot" style="background:transparent;box-shadow:none;border:1px solid #B5A79A"></span>Restablecer</button>
+      </div>
+
+      <!-- mode toggle -->
+      <div class="modes hidden" id="modes">
+        <button data-mode="solid" aria-pressed="true">Entero</button>
+        <button data-mode="section" aria-pressed="false">Disección</button>
+      </div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+
+    <!-- ================= ASIDE ================= -->
+    <aside>
+      <div class="panel" id="panel-today">
+        <div class="eyebrow">Tu repaso de hoy</div>
+        <div class="ring" style="margin-top:16px">
+          <svg width="74" height="74" viewBox="0 0 74 74">
+            <circle cx="37" cy="37" r="30" fill="none" stroke="rgba(27,22,19,.09)" stroke-width="7"/>
+            <circle cx="37" cy="37" r="30" fill="none" stroke="#C25C3B" stroke-width="7" stroke-linecap="round"
+                    stroke-dasharray="188.5" stroke-dashoffset="75" transform="rotate(-90 37 37)"/>
+          </svg>
+          <div class="ringTxt"><b>12<span style="font-size:15px;color:#8C7F73">/20</span></b><span>tarjetas · 4 min</span></div>
+        </div>
+        <button class="btn">Empezar repaso</button>
+        <button class="btn ghost">Examen sorpresa</button>
+        <div class="mini">
+          <div><b>86%</b><span>retención</span></div>
+          <div><b>7</b><span>por repasar</span></div>
+          <div><b>3</b><span>días al examen</span></div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-tooth" style="display:none">
+        <button class="back" id="back"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3 5 8l5 5"/></svg>Arcada</button>
+        <div class="eyebrow">FDI 16 · Universal 3</div>
+        <h1>Primer molar<em> superior</em></h1>
+        <p class="sub">Maxilar derecho · erupción a los 6 años</p>
+        <div class="facts">
+          <div class="fact"><b>3</b><span>raíces</span></div>
+          <div class="fact"><b>4</b><span>conductos</span></div>
+          <div class="fact"><b>II</b><span>Vertucci</span></div>
+          <div class="fact"><b>10,5 mm</b><span>corona</span></div>
+        </div>
+        <div class="badge">● Pregunta frecuente en anatomía</div>
+        <div class="quiz">
+          <p class="qtext">¿Cuál es la raíz más voluminosa?</p>
+          <div class="opts">
+            <button class="opt" data-ok="0">Mesiovestibular</button>
+            <button class="opt" data-ok="1">Palatina</button>
+            <button class="opt" data-ok="0">Distovestibular</button>
+          </div>
+          <p class="fb" id="fb"></p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  const TYPES = ["tercer molar","segundo molar","primer molar","segundo premolar","primer premolar","canino","incisivo lateral","incisivo central"];
+  const QUAD = ["superior derecho","superior izquierdo","inferior izquierdo","inferior derecho"];
+
+  /* ---------- build arch ---------- */
+  const arch = $("#arch");
+  const NS = "http://www.w3.org/2000/svg";
+  const cx = 340;
+
+  function makeTooth(x, y, rot, label, quad, type, hot) {
+    const g = document.createElementNS(NS, "g");
+    g.setAttribute("class", "t");
+    g.setAttribute("transform", `translate(${x} ${y}) rotate(${rot})`);
+    const h = type.includes("molar") ? 48 : type.includes("premolar") ? 45 : 42;
+    const w = type.includes("molar") ? 38 : type.includes("premolar") ? 33 : 28;
+    if (hot) {
+      const halo = document.createElementNS(NS, "rect");
+      halo.setAttribute("x", -w/2 - 5); halo.setAttribute("y", -h/2 - 5);
+      halo.setAttribute("width", w + 10); halo.setAttribute("height", h + 10);
+      halo.setAttribute("rx", 13); halo.setAttribute("fill", "#C25C3B"); halo.setAttribute("opacity", ".18");
+      halo.setAttribute("class", "hintHalo");
+      g.appendChild(halo);
+    }
+    const rect = document.createElementNS(NS, "rect");
+    rect.setAttribute("x", -w/2); rect.setAttribute("y", -h/2);
+    rect.setAttribute("width", w); rect.setAttribute("height", h);
+    rect.setAttribute("rx", 8);
+    rect.setAttribute("fill", "#FFFCF6");
+    rect.setAttribute("stroke", "rgba(27,22,19,.18)");
+    g.appendChild(rect);
+
+    const t = document.createElementNS(NS, "text");
+    t.setAttribute("class", "num");
+    t.setAttribute("text-anchor", "middle");
+    t.setAttribute("y", 4);
+    t.textContent = label;
+    g.appendChild(t);
+
+    g.addEventListener("click", () => {
+      if (hot) openTooth();
+      else toast("En la demo solo el 16 está modelado por dentro.");
+    });
+    return g;
+  }
+
+  const rx = 250, ry = 150, cyU = 236, cyL = 580, TILT = 8.6;
+
+  // faint guide along each arch
+  for (const yy of [1, -1]) {
+    const p = document.createElementNS(NS, "path");
+    const cy = yy === 1 ? cyU : cyL;
+    p.setAttribute("d", `M ${cx - rx},${cy} A ${rx} ${ry} 0 0 ${yy === 1 ? 0 : 1} ${cx + rx},${cy}`);
+    p.setAttribute("fill", "none");
+    p.setAttribute("stroke", "rgba(27,22,19,.13)");
+    p.setAttribute("stroke-width", "1");
+    p.setAttribute("stroke-dasharray", "3 6");
+    arch.appendChild(p);
+  }
+
+  for (let i = 0; i < 16; i++) {
+    const th = (i / 15) * Math.PI;
+    const x = cx - rx * Math.cos(th);
+    const yU = cyU + ry * Math.sin(th);
+    const yL = cyL - ry * Math.sin(th);
+    const rot = (i - 7.5) * TILT;
+
+    // upper: viewer-left = quadrant 1 (18..11)
+    const qi = i < 8 ? 0 : 1;
+    const idx = i < 8 ? i : 15 - i;          // 0 = molar, 7 = incisor
+    const lU = (qi === 0 ? 1 : 2) * 10 + (8 - idx);
+    arch.appendChild(makeTooth(x, yU, -rot, String(lU), QUAD[qi], TYPES[idx], lU === 16));
+
+    // lower: viewer-left = quadrant 4 (48..41)
+    const lL = (qi === 0 ? 4 : 3) * 10 + (8 - idx);
+    arch.appendChild(makeTooth(x, yL, rot, String(lL), QUAD[qi === 0 ? 3 : 2], TYPES[idx], false));
+  }
+
+  /* ---------- state ---------- */
+  let view = "arch";
+  let mode = "solid";
+
+  const viewArch = $("#view-arch"), viewTooth = $("#view-tooth");
+  const rail = $("#rail"), modes = $("#modes"), hint = $("#hint");
+  const panelToday = $("#panel-today"), panelTooth = $("#panel-tooth");
+  const tooth = $("#tooth");
+
+  function openTooth() {
+    view = "tooth";
+    viewArch.classList.add("hidden");
+    viewTooth.classList.remove("hidden");
+    rail.classList.remove("hidden");
+    modes.classList.remove("hidden");
+    panelToday.style.display = "none";
+    panelTooth.style.display = "";
+  }
+  function openArch() {
+    view = "arch";
+    viewTooth.classList.add("hidden");
+    viewArch.classList.remove("hidden");
+    rail.classList.add("hidden");
+    modes.classList.add("hidden");
+    panelTooth.style.display = "none";
+    panelToday.style.display = "";
+    setMode("solid");
+  }
+
+  function setMode(m) {
+    mode = m;
+    tooth.classList.toggle("mode-solid", m === "solid");
+    tooth.classList.toggle("mode-section", m === "section");
+    $$("#modes button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === m)));
+  }
+
+  /* ---------- layers ---------- */
+  $$(".chip[data-layer]").forEach(chip => {
+    chip.addEventListener("click", () => {
+      if (mode === "solid") setMode("section");
+      const on = chip.getAttribute("aria-pressed") !== "false";
+      chip.setAttribute("aria-pressed", String(!on));
+      const layer = chip.dataset.layer;
+      $$(`[data-layer="${layer}"]`, tooth).forEach(n => n.classList.toggle("off", on));
+      if (layer === "enamel") tooth.querySelector(".enamel").classList.toggle("off", on);
+    });
+  });
+  $("#resetLayers").addEventListener("click", () => {
+    $$(".chip[data-layer]").forEach(c => c.setAttribute("aria-pressed", "true"));
+    $$("[data-layer]", tooth).forEach(n => n.classList.remove("off"));
+    tooth.querySelector(".enamel").classList.remove("off");
+    setMode("section");
+  });
+
+  $$("#modes button").forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
+  $("#back").addEventListener("click", openArch);
+
+  /* ---------- quiz ---------- */
+  $("#fb");
+  $$(".opt").forEach(o => o.addEventListener("click", () => {
+    $$(".opt").forEach(x => x.classList.remove("ok", "bad"));
+    const ok = o.dataset.ok === "1";
+    o.classList.add(ok ? "ok" : "bad");
+    if (!ok) $$(".opt").find(x => x.dataset.ok === "1").classList.add("ok");
+    const fb = $("#fb");
+    fb.textContent = ok ? "Correcto. La palatina es la de mayor diámetro y la más recta." : "Casi: la palatina es la más voluminosa y la más recta.";
+    fb.classList.add("show");
+  }));
+
+  /* ---------- toast ---------- */
+  let tt;
+  function toast(msg) {
+    const el = $("#toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(tt);
+    tt = setTimeout(() => el.classList.remove("show"), 2600);
+  }
+
+  /* first-run nudge */
+  setTimeout(() => { if (view === "arch") hint.style.opacity = ".55"; }, 4000);
+
+  if (location.hash.startsWith("#tooth") || location.hash.startsWith("#section")) openTooth();
+  if (location.hash === "#section") setMode("section");
+})();
+</script>
+</body>
+</html>
